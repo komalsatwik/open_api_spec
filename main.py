@@ -32,7 +32,7 @@ async def upload_spec(application_name: str = Form(...), file: UploadFile = File
 
         parser = ParserFactory.get_parser(file_name)
         validator = SpecValidator(parser)
-        validator.validate(content)
+        validator.validate(content.decode("utf-8"))
 
         insert_file(
             application_name, file_name, file_name.split(".")[-1].lower(), content
@@ -43,7 +43,7 @@ async def upload_spec(application_name: str = Form(...), file: UploadFile = File
             200,
         )
     except ValueError as e:
-        return JSONResponse({"message": f"Error occurred:{e}"}, 400)
+        return JSONResponse({"message": f"Error occurred: {e}"}, 400)
     except Exception as e:
         return JSONResponse(
             {"message": f"Error occurred while uploading file.{e}"}, 500
@@ -119,3 +119,4 @@ async def get_spec_by_version(application_name: str, version: int):
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+

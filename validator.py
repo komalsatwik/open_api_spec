@@ -43,6 +43,7 @@ class SpecValidator:
             validate_spec(spec)
             return True
         except (json.JSONDecodeError, yaml.YAMLError) as e:
-            raise ValueError(f"Error in parsing file: {e}")
+            raise ValueError("Invalid OpenAPI Spec")
         except Exception as e:
             raise Exception(f"Invalid OpenAPI Spec: {e}")
+
